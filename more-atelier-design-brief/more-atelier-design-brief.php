@@ -2,7 +2,7 @@
 /**
  * Plugin Name: More Atelier — Design Brief
  * Description: The design brief enquiry form. Place [more_atelier_brief] on a page. Answers and uploads are emailed to the studio.
- * Version:     1.0.0
+ * Version:     1.0.1
  * Author:      Anirudha Talmale
  * License:     GPL-2.0-or-later
  * Text Domain: madb
@@ -10,7 +10,7 @@
 
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-define( 'MADB_VER',  '1.0.0' );
+define( 'MADB_VER',  '1.0.1' );
 define( 'MADB_FILE', __FILE__ );
 define( 'MADB_DIR',  plugin_dir_path( __FILE__ ) );
 define( 'MADB_URL',  plugin_dir_url( __FILE__ ) );
@@ -51,6 +51,7 @@ function madb_max_file_bytes() {
 /** Kept for readability at the call sites. */
 function madb_max_files() { return MADB_MAX_FILES; }
 
+require_once MADB_DIR . 'includes/fonts.php';
 require_once MADB_DIR . 'includes/schema.php';
 require_once MADB_DIR . 'includes/render.php';
 require_once MADB_DIR . 'includes/submit.php';
@@ -128,6 +129,13 @@ add_action( 'wp_enqueue_scripts', function () {
 	if ( ! $post || ! has_shortcode( $post->post_content, 'more_atelier_brief' ) ) { return; }
 
 	wp_enqueue_style( 'madb', MADB_URL . 'assets/brief.css', array(), MADB_VER );
+
+	// The studio's own faces, declared here so the brief never depends on
+	// Elementor's per-page CSS happening to include them.
+	$faces = madb_font_face_css();
+	if ( $faces ) {
+		wp_add_inline_style( 'madb', $faces );
+	}
 	wp_enqueue_script( 'madb', MADB_URL . 'assets/brief.js', array(), MADB_VER, true );
 	wp_localize_script( 'madb', 'MADB', array(
 		'endpoint'  => esc_url_raw( rest_url( 'madb/v1/submit' ) ),
