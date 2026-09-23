@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Design Brief — More Atelier</title>
+<style>
+/* ------------------------------------------------------------------
+   MORE ATELIER — DESIGN BRIEF
+   Bradford LL / Acumin Pro are already self-hosted by the Ecomus theme,
+   so on moreatelier.com.au these resolve to the real site faces.
+   The stacks below only matter in local preview.
+------------------------------------------------------------------- */
+:root{
+  --ink:#1a1a1a;
+  --grey:#545454;
+  --rule:rgba(0,0,0,.22);
+  --rule-hover:rgba(0,0,0,.55);
+  --serif:'BradfordLLTT-Light','Bradford LL',Georgia,'Times New Roman',serif;
+  --sans:'AcuminPro-Light','Acumin Pro','Helvetica Neue',Helvetica,Arial,sans-serif;
+  --pad:7.5vw;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:#fff;color:var(--ink);
+  font-family:var(--sans);font-weight:300;
+  -webkit-font-smoothing:antialiased;
+}
+/* kill the theme's own scroll-reveal on our panels if dropped into Elementor */
+.ma-brief [data-animate]{opacity:1!important;transform:none!important}
+
+.ma-brief{display:flex;align-items:flex-start;position:relative}
+
+/* ---------- left: the scrolling brief ---------- */
+.ma-flow{width:50%;flex:0 0 50%;position:relative;z-index:2}
+
+.ma-panel{
+  min-height:100vh;display:flex;flex-direction:column;justify-content:center;
+  padding:12vh var(--pad);
+  opacity:0;transition:opacity .55s cubic-bezier(.4,0,.2,1);
+  will-change:opacity;
+}
+.ma-panel.is-on{opacity:1}
+
+/* ---------- typography ---------- */
+.ma-h{
+  font-family:var(--serif);font-weight:400;
+  font-size:clamp(13px,1.02vw,17px);letter-spacing:.06em;
+  text-transform:uppercase;color:var(--ink);
+  margin:0 0 1.9em;
+}
+.ma-lede{
+  font-size:clamp(12px,.78vw,14px);line-height:1.85;letter-spacing:.03em;
+  color:var(--grey);max-width:34em;margin:0 0 1.5em;
+}
+.ma-lede:last-child{margin-bottom:0}
+.ma-q{
+  display:block;
+  font-size:clamp(10px,.66vw,12px);letter-spacing:.14em;
+  text-transform:uppercase;color:var(--grey);
+  margin:0 0 .5em;
+}
+.ma-note{
+  font-size:clamp(11px,.72vw,13px);line-height:1.75;letter-spacing:.02em;
+  color:var(--grey);max-width:36em;margin:-.15em 0 1.15em;
+}
+
+/* ---------- fields: a hairline rule, never a box ---------- */
+.ma-field{margin:0 0 2.6em}
+.ma-field:last-child{margin-bottom:0}
+
+.ma-in,.ma-ta{
+  display:block;width:100%;max-width:33em;
+  font-family:var(--sans);font-weight:300;
+  font-size:clamp(12px,.8vw,15px);letter-spacing:.02em;color:var(--ink);
+  background:transparent;border:0;border-bottom:1px solid var(--rule);
+  border-radius:0;padding:.35em 0 .55em;
+  transition:border-color .3s ease;
+}
+.ma-in:hover,.ma-ta:hover{border-bottom-color:var(--rule-hover)}
+.ma-in:focus,.ma-ta:focus{outline:0;border-bottom-color:var(--ink)}
+.ma-ta{resize:none;overflow:hidden;min-height:2.4em;line-height:1.8}
+.ma-in::placeholder,.ma-ta::placeholder{color:rgba(0,0,0,.25)}
+
+/* inline "___m2" */
+.ma-inline{display:flex;align-items:baseline;gap:.5em}
+.ma-inline .ma-in{width:7em;max-width:7em;text-align:left}
+.ma-unit{font-size:clamp(11px,.72vw,13px);letter-spacing:.06em;color:var(--grey)}
+
+/* ---------- the thin open circles ---------- */
+.ma-opts{margin:.9em 0 0;display:flex;flex-direction:column;gap:.62em}
+.ma-opt{display:flex;align-items:flex-start;gap:.72em;cursor:pointer;max-width:36em}
+.ma-opt input{position:absolute;opacity:0;width:0;height:0}
+.ma-dot{
+  flex:0 0 auto;width:9px;height:9px;margin-top:.26em;
+  border:1px solid rgba(0,0,0,.42);border-radius:50%;
+  position:relative;transition:border-color .25s ease;
+}
+.ma-opt:hover .ma-dot{border-color:var(--ink)}
+.ma-dot::after{
+  content:'';position:absolute;inset:1.4px;border-radius:50%;
+  background:var(--ink);opacity:0;transform:scale(.3);
+  transition:opacity .22s ease,transform .22s ease;
+}
+.ma-opt input:checked + .ma-dot{border-color:var(--ink)}
+.ma-opt input:checked + .ma-dot::after{opacity:1;transform:scale(1)}
+.ma-opt input:focus-visible + .ma-dot{box-shadow:0 0 0 3px rgba(0,0,0,.1)}
+.ma-optlabel{
+  font-size:clamp(10px,.66vw,12px);letter-spacing:.11em;
+  text-transform:uppercase;color:var(--grey);line-height:1.5;
+}
+.ma-opt input:checked ~ .ma-optlabel{color:var(--ink)}
+/* the sentence-case options in THE INVESTMENT / OUR INVOLVEMENT */
+.ma-optlabel.is-sentence{text-transform:none;letter-spacing:.02em;font-size:clamp(11px,.74vw,13px)}
+.ma-optdesc{
+  font-size:clamp(11px,.72vw,13px);line-height:1.7;letter-spacing:.02em;
+  color:var(--grey);margin:.3em 0 .55em;padding-left:1.52em;max-width:34em;
+}
+
+/* ---------- upload ---------- */
+.ma-up{margin-top:1.4em}
+.ma-up input[type=file]{position:absolute;opacity:0;width:0;height:0}
+.ma-uplabel{
+  display:inline-block;cursor:pointer;
+  font-size:clamp(10px,.66vw,12px);letter-spacing:.14em;text-transform:uppercase;
+  color:var(--grey);padding-bottom:.35em;border-bottom:1px solid transparent;
+  transition:color .3s ease,border-color .3s ease;
+}
+.ma-uplabel:hover{color:var(--ink);border-bottom-color:var(--rule)}
+.ma-files{margin:.9em 0 0;padding:0;list-style:none}
+.ma-files li{
+  font-size:clamp(10px,.66vw,12px);letter-spacing:.06em;color:var(--grey);
+  padding:.32em 0;border-bottom:1px solid rgba(0,0,0,.08);
+  display:flex;justify-content:space-between;gap:1em;max-width:33em;
+}
+.ma-files .ma-sz{color:rgba(0,0,0,.3);white-space:nowrap}
+.ma-uphint{
+  font-size:clamp(10px,.64vw,11px);letter-spacing:.05em;color:rgba(0,0,0,.3);
+  margin:.7em 0 0;
+}
+
+/* ---------- submit ---------- */
+.ma-foot{margin-top:4.5em;display:flex;justify-content:flex-end;align-items:center;gap:2em;max-width:33em}
+.ma-submit{
+  font-family:var(--serif);font-weight:400;
+  font-size:clamp(12px,.92vw,15px);letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink);background:transparent;border:0;cursor:pointer;
+  padding:.4em 0;border-bottom:1px solid transparent;
+  transition:border-color .35s ease,opacity .3s ease;
+}
+.ma-submit:hover{border-bottom-color:var(--ink)}
+.ma-submit[disabled]{opacity:.35;cursor:default;border-bottom-color:transparent}
+.ma-err{
+  font-size:clamp(10px,.66vw,12px);letter-spacing:.08em;color:#8a4b3c;
+  margin-right:auto;opacity:0;transition:opacity .3s ease;
+}
+.ma-err.is-on{opacity:1}
+
+/* ---------- right: the sticky film ---------- */
+.ma-stage{
+  width:50%;flex:0 0 50%;position:sticky;top:0;height:100vh;
+  overflow:hidden;background:#b9a48c;z-index:1;
+}
+.ma-stage video,.ma-stage img.ma-poster{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;display:block;
+}
+.ma-stage video{z-index:2;opacity:0;transition:opacity 1.1s ease}
+.ma-stage video.is-ready{opacity:1}
+.ma-scrim{position:absolute;inset:0;z-index:3;background:linear-gradient(180deg,rgba(0,0,0,.10),rgba(0,0,0,.16))}
+
+/* the marker: number at the left edge, title at the right, on one line */
+.ma-marker{
+  position:absolute;z-index:4;left:0;right:0;top:50%;transform:translateY(-50%);
+  padding:0 5.5%;
+  display:flex;justify-content:space-between;align-items:baseline;
+  pointer-events:none;
+}
+.ma-mk{
+  position:absolute;left:0;right:0;padding:0 5.5%;
+  display:flex;justify-content:space-between;align-items:baseline;
+  font-family:var(--serif);font-weight:400;color:#fff;
+  font-size:clamp(13px,1.02vw,18px);letter-spacing:.1em;text-transform:uppercase;
+  opacity:0;transition:opacity .75s cubic-bezier(.4,0,.2,1);
+  text-shadow:0 1px 18px rgba(0,0,0,.22);
+}
+.ma-mk.is-on{opacity:1}
+
+/* ---------- thank you ---------- */
+#ma-thanks{display:none}
+#ma-thanks.is-live{display:flex}
+
+/* ---------- phones / tablets: stack, film above the questions ---------- */
+@media (max-width:900px){
+  :root{--pad:8vw}
+  /* stay flex so the film can be ordered ABOVE the questions — it sits
+     after them in the DOM so that desktop keeps the form in the tab order first */
+  .ma-brief{flex-direction:column;align-items:stretch}
+  .ma-flow{width:100%;flex:1 1 auto;order:2}
+  .ma-stage{
+    width:100%;flex:0 0 auto;order:1;
+    position:sticky;top:0;height:38vh;z-index:5;
+  }
+  .ma-panel{min-height:auto;padding:7vh var(--pad);opacity:1}
+  .ma-panel.is-on{opacity:1}
+  .ma-mk{font-size:11px;letter-spacing:.08em}
+  .ma-q{letter-spacing:.09em}
+  .ma-optlabel{letter-spacing:.07em}
+  .ma-uplabel{letter-spacing:.09em}
+  .ma-in,.ma-ta{max-width:none}
+  .ma-foot{max-width:none;justify-content:flex-start;margin-top:3em}
+}
+@media (prefers-reduced-motion:reduce){
+  .ma-panel,.ma-mk,.ma-stage video{transition:none}
+  .ma-panel{opacity:1}
+}
+</style>
+</head>
+<body>
+
+<form class="ma-brief" id="ma-brief" novalidate enctype="multipart/form-data">
+
+  <!-- ============ LEFT : THE BRIEF ============ -->
+  <div class="ma-flow">
+
+    <!-- 00 — welcome -->
+    <section class="ma-panel">
+      <h2 class="ma-h">Design Brief</h2>
+      <p class="ma-lede">Thank you for considering More Atelier.</p>
+      <p class="ma-lede">Every project begins a little differently. Some clients come to us with plans already underway, while others are at the very beginning with an idea of what they would like to create.</p>
+      <p class="ma-lede">This short project brief helps us understand where things currently sit, what you would like to achieve, and how we may be able to support you. There are no wrong answers and nothing needs to be completely resolved at this stage — simply share what you know so far.</p>
+    </section>
+
+    <!-- 01 — intro -->
+    <section class="ma-panel" data-num="01." data-title="The Project">
+      <h2 class="ma-h">Your Project</h2>
+      <p class="ma-lede">Every project begins differently. This first section gives us a little context around what you’re planning, where the project is located and what you’re hoping to create.</p>
+    </section>
+
+    <section class="ma-panel" data-num="01." data-title="The Project">
+      <h2 class="ma-h">About You</h2>
+      <div class="ma-field">
+        <label class="ma-q" for="f-name">First &amp; last name</label>
+        <input class="ma-in" type="text" id="f-name" name="name" autocomplete="name">
+      </div>
+      <div class="ma-field">
+        <label class="ma-q" for="f-email">Email address</label>
+        <input class="ma-in" type="email" id="f-email" name="email" autocomplete="email">
+      </div>
+      <div class="ma-field">
+        <label class="ma-q" for="f-mobile">Mobile number</label>
+        <input class="ma-in" type="tel" id="f-mobile" name="mobile" autocomplete="tel">
+      </div>
+    </section>
+
+    <section class="ma-panel" data-num="01." data-title="The Project">
+      <h2 class="ma-h">The Project</h2>
+      <div class="ma-field">
+        <label class="ma-q" for="f-loc">Project location</label>
+        <input class="ma-in" type="text" id="f-loc" name="location">
+      </div>
+      <div class="ma-field">
+        <span class="ma-q">What type of project</span>
+        <div class="ma-opts" data-row>
+          <label class="ma-opt"><input type="radio" name="project_type" value="Residential"><span class="ma-dot"></span><span class="ma-optlabel">Residential</span></label>
+          <label class="ma-opt"><input type="radio" name="project_type" value="Hospitality"><span class="ma-dot"></span><span class="ma-optlabel">Hospitality</span></label>
+          <label class="ma-opt"><input type="radio" name="project_type" value="Retail"><span class="ma-dot"></span><span class="ma-optlabel">Retail</span></label>
+          <label class="ma-opt"><input type="radio" name="project_type" value="Commercial"><span class="ma-dot"></span><span class="ma-optlabel">Commercial</span></label>
+          <label class="ma-opt"><input type="radio" name="project_type" value="Other"><span class="ma-dot"></span><span class="ma-optlabel">Other</span></label>
+        </div>
+      </div>
+    </section>
+
+    <section class="ma-panel" data-num="01." data-title="The Project">
+      <h2 class="ma-h">About the Project</h2>
+      <div class="ma-field">
+        <label class="ma-q" for="f-about">Tell us a little about your project</label>
+        <textarea class="ma-ta" id="f-about" name="about_project" rows="1"></textarea>
+      </div>
+    </section>
+
+    <!-- 02 — intro -->
+    <section class="ma-panel" data-num="02." data-title="Project Status">
+      <h2 class="ma-h">Project Status</h2>
+      <p class="ma-lede">Understanding where your project currently sits helps us see what is already in place and where More Atelier would step in. Tell us about any plans, consultants, builders or other project teams already involved, and where you may still need support.</p>
+    </section>
+
+    <section class="ma-panel" data-num="02." data-title="Project Status">
+      <h2 class="ma-h">Project Stage</h2>
+      <div class="ma-field">
+        <span class="ma-q">What stage is the project currently at</span>
+        <div class="ma-opts">
+          <label class="ma-opt"><input type="radio" name="project_stage" value="Early planning"><span class="ma-dot"></span><span class="ma-optlabel">Early planning</span></label>
+          <label class="ma-opt"><input type="radio" name="project_stage" value="Architectural design underway"><span class="ma-dot"></span><span class="ma-optlabel">Architectural design underway</span></label>
+          <label class="ma-opt"><input type="radio" name="project_stage" value="Plans completed"><span class="ma-dot"></span><span class="ma-optlabel">Plans completed</span></label>
+          <label class="ma-opt"><input type="radio" name="project_stage" value="Builder / contractor appointed"><span class="ma-dot"></span><span class="ma-optlabel">Builder / contractor appointed</span></label>
+          <label class="ma-opt"><input type="radio" name="project_stage" value="Construction underway"><span class="ma-dot"></span><span class="ma-optlabel">Construction underway</span></label>
+          <label class="ma-opt"><input type="radio" name="project_stage" value="Other"><span class="ma-dot"></span><span class="ma-optlabel">Other</span></label>
+        </div>
+      </div>
+    </section>
+
+    <section class="ma-panel" data-num="02." data-title="Project Plan">
+      <h2 class="ma-h">Project Planning</h2>
+      <div class="ma-field">
+        <label class="ma-q" for="f-when">When would you ideally like the project completed</label>
+        <input class="ma-in" type="text" id="f-when" name="ideal_completion">
+      </div>
+      <div class="ma-field">
+        <span class="ma-q">Do you have any existing plans or documents</span>
+        <div class="ma-opts">
+          <label class="ma-opt"><input type="radio" name="existing_plans" value="Yes — architectural / construction drawings"><span class="ma-dot"></span><span class="ma-optlabel">Yes — architectural / construction drawings</span></label>
+          <label class="ma-opt"><input type="radio" name="existing_plans" value="Yes — preliminary plans"><span class="ma-dot"></span><span class="ma-optlabel">Yes — preliminary plans</span></label>
+          <label class="ma-opt"><input type="radio" name="existing_plans" value="Some documentation available"><span class="ma-dot"></span><span class="ma-optlabel">Some documentation available</span></label>
+          <label class="ma-opt"><input type="radio" name="existing_plans" value="No plans or documents at this stage"><span class="ma-dot"></span><span class="ma-optlabel">No plans or documents at this stage</span></label>
+        </div>
+        <div class="ma-up">
+          <input type="file" id="f-plans" name="plans[]" multiple
+                 accept=".pdf,.jpg,.jpeg,.png,.heic,.dwg,.doc,.docx,.zip">
+          <label class="ma-uplabel" for="f-plans">+ Upload documents here</label>
+          <ul class="ma-files" data-for="f-plans"></ul>
+          <p class="ma-uphint">PDF, JPG, PNG, DWG, DOC or ZIP — up to 5 files, 8MB each</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="ma-panel" data-num="02." data-title="Project Plan">
+      <h2 class="ma-h">Project Team</h2>
+      <div class="ma-field">
+        <span class="ma-q">Do you have a team you are working with in place</span>
+        <div class="ma-opts">
+          <label class="ma-opt"><input type="checkbox" name="project_team[]" value="Architect"><span class="ma-dot"></span><span class="ma-optlabel">Architect</span></label>
+          <label class="ma-opt"><input type="checkbox" name="project_team[]" value="Draftsperson"><span class="ma-dot"></span><span class="ma-optlabel">Draftsperson</span></label>
+          <label class="ma-opt"><input type="checkbox" name="project_team[]" value="Builder"><span class="ma-dot"></span><span class="ma-optlabel">Builder</span></label>
+          <label class="ma-opt"><input type="checkbox" name="project_team[]" value="Engineer"><span class="ma-dot"></span><span class="ma-optlabel">Engineer</span></label>
+          <label class="ma-opt"><input type="checkbox" name="project_team[]" value="Certifier / planning consultants"><span class="ma-dot"></span><span class="ma-optlabel">Certifier / planning consultants</span></label>
+          <label class="ma-opt"><input type="checkbox" name="project_team[]" value="Other"><span class="ma-dot"></span><span class="ma-optlabel">Other</span></label>
+          <label class="ma-opt"><input type="checkbox" name="project_team[]" value="No project team has been appointed"><span class="ma-dot"></span><span class="ma-optlabel">No project team has been appointed</span></label>
+        </div>
+      </div>
+    </section>
+
+    <!-- 03 — intro -->
+    <section class="ma-panel" data-num="03." data-title="The Scope">
+      <h2 class="ma-h">Project Scope</h2>
+      <p class="ma-lede">The scale and level of detail can vary greatly from one project to the next. Here, we’d like to understand which spaces are involved, the extent of the work, and the level of design support you’re looking for.</p>
+    </section>
+
+    <section class="ma-panel" data-num="03." data-title="The Scope">
+      <h2 class="ma-h">Project Size</h2>
+      <div class="ma-field">
+        <label class="ma-q" for="f-size">What is the approximate size of the project</label>
+        <div class="ma-inline">
+          <input class="ma-in" type="text" id="f-size" name="project_size" inputmode="numeric">
+          <span class="ma-unit">m²</span>
+        </div>
+        <div class="ma-opts">
+          <label class="ma-opt"><input type="checkbox" name="size_unsure" value="Unsure"><span class="ma-dot"></span><span class="ma-optlabel">Unsure</span></label>
+        </div>
+      </div>
+    </section>
+
+    <section class="ma-panel" data-num="03." data-title="The Scope">
+      <h2 class="ma-h">Project Scope</h2>
+      <div class="ma-field">
+        <label class="ma-q" for="f-areas">Can you describe the areas included in the project?</label>
+        <p class="ma-note">Let us know which spaces are involved and, where relevant, how many of each. For example: kitchen, 3 bathrooms, 4 bedrooms, living and dining areas, reception, retail space, bar, treatment rooms, staff areas or outdoor spaces.</p>
+        <textarea class="ma-ta" id="f-areas" name="areas" rows="1"></textarea>
+      </div>
+    </section>
+
+    <section class="ma-panel" data-num="03." data-title="The Scope">
+      <h2 class="ma-h">Our Involvement</h2>
+      <div class="ma-field">
+        <span class="ma-q">What level of design support are you looking for?</span>
+        <div class="ma-opts">
+          <label class="ma-opt"><input type="radio" name="involvement" value="Full-service interior design"><span class="ma-dot"></span><span class="ma-optlabel">Full-service interior design</span></label>
+          <p class="ma-optdesc">We’d like More Atelier to guide from initial concept through to completion.</p>
+          <label class="ma-opt"><input type="radio" name="involvement" value="Interior design for selected areas"><span class="ma-dot"></span><span class="ma-optlabel">Interior design for selected areas</span></label>
+          <p class="ma-optdesc">We need design assistance with particular rooms, spaces or areas of the project.</p>
+          <label class="ma-opt"><input type="radio" name="involvement" value="Furniture, furnishings &amp; styling"><span class="ma-dot"></span><span class="ma-optlabel">Furniture, furnishings &amp; styling</span></label>
+          <p class="ma-optdesc">The space is largely resolved and we need help with furniture, lighting, art and the finishing layers.</p>
+          <label class="ma-opt"><input type="radio" name="involvement" value="Design consultation &amp; direction"><span class="ma-dot"></span><span class="ma-optlabel">Design consultation &amp; direction</span></label>
+          <p class="ma-optdesc">We’re looking for professional guidance and ideas rather than a complete design service.</p>
+          <label class="ma-opt"><input type="radio" name="involvement" value="We’re not sure yet"><span class="ma-dot"></span><span class="ma-optlabel">We’re not sure yet</span></label>
+          <p class="ma-optdesc">We’d like More Atelier to review the project and recommend the right level of involvement.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 04 — intro -->
+    <section class="ma-panel" data-num="04." data-title="The Vision">
+      <h2 class="ma-h">The Vision</h2>
+      <p class="ma-lede">Beyond the practical requirements, we want to understand what you’re drawn to and how you want the space to feel. Share the references, ideas and details that are shaping your vision — even if they’re still evolving.</p>
+    </section>
+
+    <section class="ma-panel" data-num="04." data-title="The Vision">
+      <h2 class="ma-h">The Vision</h2>
+      <div class="ma-field">
+        <label class="ma-q" for="f-feel">How would you like the finished space to feel</label>
+        <p class="ma-note">Tell us about the atmosphere, experience or overall feeling you’re hoping to create.</p>
+        <textarea class="ma-ta" id="f-feel" name="feel" rows="1"></textarea>
+      </div>
+      <div class="ma-field">
+        <label class="ma-q" for="f-drawn">What are you drawn to?</label>
+        <p class="ma-note">Share any interiors, places, materials or design references that resonate with you. Equally, let us know if there’s anything you definitely don’t want.</p>
+        <textarea class="ma-ta" id="f-drawn" name="drawn_to" rows="1"></textarea>
+      </div>
+    </section>
+
+    <section class="ma-panel" data-num="04." data-title="The Vision">
+      <h2 class="ma-h">Existing Space</h2>
+      <div class="ma-field">
+        <label class="ma-q" for="f-existing">Is there anything existing that needs to be retained or incorporated into the design?</label>
+        <p class="ma-note">For example, furniture, artwork, architectural features, existing finishes or brand elements.</p>
+        <textarea class="ma-ta" id="f-existing" name="existing" rows="1"></textarea>
+      </div>
+    </section>
+
+    <section class="ma-panel" data-num="04." data-title="The Vision">
+      <h2 class="ma-h">Inspiration</h2>
+      <div class="ma-field">
+        <label class="ma-q" for="f-insp">Do you have any inspiration you’d like to share with us?</label>
+        <p class="ma-note">Upload images or paste links to Pinterest boards, Instagram saves or other references.</p>
+        <textarea class="ma-ta" id="f-insp" name="inspiration_links" rows="1" placeholder="Paste any links here"></textarea>
+        <div class="ma-up">
+          <input type="file" id="f-inspo" name="inspiration[]" multiple
+                 accept=".pdf,.jpg,.jpeg,.png,.heic,.webp,.gif,.zip">
+          <label class="ma-uplabel" for="f-inspo">+ Upload documents</label>
+          <ul class="ma-files" data-for="f-inspo"></ul>
+          <p class="ma-uphint">JPG, PNG, PDF or ZIP — up to 5 files, 8MB each</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 05 — intro -->
+    <section class="ma-panel" data-num="05." data-title="The Investment">
+      <h2 class="ma-h">The Investment</h2>
+      <p class="ma-lede">A clear understanding of investment allows us to approach the project realistically from the beginning and recommend a scope that feels appropriate. These figures don’t need to be exact; an indication simply helps us understand the parameters we’ll be designing within.</p>
+    </section>
+
+    <section class="ma-panel" data-num="05." data-title="The Investment">
+      <h2 class="ma-h">Overall Project Budget</h2>
+      <div class="ma-field">
+        <span class="ma-q">What is the anticipated overall project budget?</span>
+        <p class="ma-note">This refers to the construction or fit-out, joinery, finishes, fixtures and furnishings, and excludes More Atelier’s design fees.</p>
+        <div class="ma-opts">
+          <label class="ma-opt"><input type="radio" name="project_budget" value="Under $100,000"><span class="ma-dot"></span><span class="ma-optlabel">Under $100,000</span></label>
+          <label class="ma-opt"><input type="radio" name="project_budget" value="$100,000 – $250,000"><span class="ma-dot"></span><span class="ma-optlabel">$100,000 – $250,000</span></label>
+          <label class="ma-opt"><input type="radio" name="project_budget" value="$250,000 – $500,000"><span class="ma-dot"></span><span class="ma-optlabel">$250,000 – $500,000</span></label>
+          <label class="ma-opt"><input type="radio" name="project_budget" value="$500,000 – $1M"><span class="ma-dot"></span><span class="ma-optlabel">$500,000 – $1M</span></label>
+          <label class="ma-opt"><input type="radio" name="project_budget" value="$1M – $2M"><span class="ma-dot"></span><span class="ma-optlabel">$1M – $2M</span></label>
+          <label class="ma-opt"><input type="radio" name="project_budget" value="$2M+"><span class="ma-dot"></span><span class="ma-optlabel">$2M+</span></label>
+          <label class="ma-opt"><input type="radio" name="project_budget" value="Yet to be determined"><span class="ma-dot"></span><span class="ma-optlabel">Yet to be determined</span></label>
+        </div>
+      </div>
+    </section>
+
+    <section class="ma-panel" data-num="05." data-title="The Investment">
+      <h2 class="ma-h">Design Investment</h2>
+      <div class="ma-field">
+        <span class="ma-q">Have you considered an investment for interior design services?</span>
+        <p class="ma-note">An indication helps us understand the level of service you are anticipating.</p>
+        <div class="ma-opts">
+          <label class="ma-opt"><input type="radio" name="design_budget" value="Under $10,000"><span class="ma-dot"></span><span class="ma-optlabel">Under $10,000</span></label>
+          <label class="ma-opt"><input type="radio" name="design_budget" value="$10,000 – $20,000"><span class="ma-dot"></span><span class="ma-optlabel">$10,000 – $20,000</span></label>
+          <label class="ma-opt"><input type="radio" name="design_budget" value="$20,000 – $40,000"><span class="ma-dot"></span><span class="ma-optlabel">$20,000 – $40,000</span></label>
+          <label class="ma-opt"><input type="radio" name="design_budget" value="$40,000 – $60,000"><span class="ma-dot"></span><span class="ma-optlabel">$40,000 – $60,000</span></label>
+          <label class="ma-opt"><input type="radio" name="design_budget" value="$60,000 – $100,000"><span class="ma-dot"></span><span class="ma-optlabel">$60,000 – $100,000</span></label>
+          <label class="ma-opt"><input type="radio" name="design_budget" value="$100,000 +"><span class="ma-dot"></span><span class="ma-optlabel">$100,000 +</span></label>
+          <label class="ma-opt"><input type="radio" name="design_budget" value="We haven’t set a design budget yet"><span class="ma-dot"></span><span class="ma-optlabel is-sentence">We haven’t set a design budget yet</span></label>
+          <label class="ma-opt"><input type="radio" name="design_budget" value="We’d like More Atelier to advise us"><span class="ma-dot"></span><span class="ma-optlabel is-sentence">We’d like More Atelier to advise us</span></label>
+        </div>
+      </div>
+    </section>
+
+    <section class="ma-panel" data-num="05." data-title="The Investment">
+      <h2 class="ma-h">Project Costings</h2>
+      <div class="ma-field">
+        <span class="ma-q">Has the project been professionally costed at this stage?</span>
+        <div class="ma-opts">
+          <label class="ma-opt"><input type="radio" name="costed" value="Yes"><span class="ma-dot"></span><span class="ma-optlabel">Yes</span></label>
+          <label class="ma-opt"><input type="radio" name="costed" value="Partially"><span class="ma-dot"></span><span class="ma-optlabel">Partially</span></label>
+          <label class="ma-opt"><input type="radio" name="costed" value="Not yet"><span class="ma-dot"></span><span class="ma-optlabel">Not yet</span></label>
+        </div>
+      </div>
+
+      <!-- honeypot -->
+      <div style="position:absolute;left:-9999px" aria-hidden="true">
+        <input type="text" name="ma_website" tabindex="-1" autocomplete="off">
+      </div>
+
+      <div class="ma-foot">
+        <span class="ma-err" id="ma-err"></span>
+        <button type="submit" class="ma-submit" id="ma-submit">Submit</button>
+      </div>
+    </section>
+
+    <!-- thank you -->
+    <section class="ma-panel" id="ma-thanks">
+      <h2 class="ma-h">Thank You</h2>
+      <p class="ma-lede">Thank you for taking the time to share your project with More Atelier.</p>
+      <p class="ma-lede">We are looking forward to spending time with what you have shared, understanding what matters most to you, and considering how More Atelier might bring it all together.</p>
+      <p class="ma-lede">From here, we will review your brief and return with an initial sense of scope, design investment and the right next step for your project.</p>
+      <p class="ma-lede">We look forward to continuing the conversation.</p>
+    </section>
+
+  </div>
+
+  <!-- ============ RIGHT : THE STICKY FILM ============ -->
+  <div class="ma-stage" id="ma-stage">
+    <img class="ma-poster" id="ma-poster" src="assets/panel-poster.jpg" alt="">
+    <video id="ma-video" muted loop playsinline preload="metadata" poster="assets/panel-poster.jpg">
+      <!-- swap in the media-library URL of IMG_3340.MP4 -->
+      <source src="assets/panel.mp4" type="video/mp4">
+    </video>
+    <div class="ma-scrim"></div>
+    <div class="ma-marker" id="ma-marker">
+      <div class="ma-mk" data-slot="a"><span class="ma-mk-n"></span><span class="ma-mk-t"></span></div>
+      <div class="ma-mk" data-slot="b"><span class="ma-mk-n"></span><span class="ma-mk-t"></span></div>
+    </div>
+  </div>
+
+</form>
+
+<script>
+(function(){
+  'use strict';
+  var panels  = [].slice.call(document.querySelectorAll('.ma-panel'));
+  var slots   = [].slice.call(document.querySelectorAll('.ma-mk'));
+  var stage   = document.getElementById('ma-stage');
+  var video   = document.getElementById('ma-video');
+  var reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var stacked = function(){ return matchMedia('(max-width: 900px)').matches; };
+
+  /* ---- the film: only reveal once it can actually paint a frame ---- */
+  if (video){
+    video.addEventListener('loadeddata', function(){
+      video.classList.add('is-ready');
+      var p = video.play();
+      if (p && p.catch) p.catch(function(){ video.classList.remove('is-ready'); });
+    });
+    video.addEventListener('error', function(){ video.classList.remove('is-ready'); });
+  }
+
+  /* ---- marker cross-fade, two slots alternating ---- */
+  var front = 0, currentKey = null;
+  function setMarker(num, title){
+    var key = (num||'') + '|' + (title||'');
+    if (key === currentKey) return;
+    currentKey = key;
+    var incoming = slots[front ^ 1], outgoing = slots[front];
+    if (!num && !title){
+      outgoing.classList.remove('is-on');
+      return;
+    }
+    incoming.querySelector('.ma-mk-n').textContent = num || '';
+    incoming.querySelector('.ma-mk-t').textContent = title || '';
+    incoming.classList.add('is-on');
+    outgoing.classList.remove('is-on');
+    front ^= 1;
+  }
+
+  /* ---- scroll: fade each panel by its distance from the centre line ---- */
+  var ticking = false;
+  function frame(){
+    ticking = false;
+    var vh = innerHeight, mid = vh / 2;
+    var best = null, bestD = Infinity;
+
+    for (var i = 0; i < panels.length; i++){
+      var el = panels[i];
+      if (el.id === 'ma-thanks' && !el.classList.contains('is-live')) continue;
+      var r = el.getBoundingClientRect();
+      var c = r.top + r.height / 2;
+      var d = Math.abs(c - mid);
+      if (d < bestD){ bestD = d; best = el; }
+
+      if (!stacked() && !reduced){
+        /* full at |d| < .26vh, gone by .56vh — a true cross-fade */
+        var t = (d - vh * 0.26) / (vh * 0.30);
+        var o = t <= 0 ? 1 : (t >= 1 ? 0 : 1 - t);
+        el.style.opacity = o.toFixed(3);
+        el.classList.toggle('is-on', o > 0.02);
+      } else {
+        el.style.opacity = '';
+        el.classList.add('is-on');
+      }
+    }
+
+    if (best) setMarker(best.getAttribute('data-num'), best.getAttribute('data-title'));
+  }
+  function onScroll(){ if (!ticking){ ticking = true; requestAnimationFrame(frame); } }
+  addEventListener('scroll', onScroll, {passive:true});
+  addEventListener('resize', onScroll);
+
+  /* ---- textareas grow with the answer, so nothing is ever a box ---- */
+  [].forEach.call(document.querySelectorAll('.ma-ta'), function(ta){
+    function grow(){ ta.style.height = 'auto'; ta.style.height = ta.scrollHeight + 'px'; }
+    ta.addEventListener('input', grow);
+    grow();
+  });
+
+  /* ---- uploads: list what was chosen, enforce the limits up front ---- */
+  var MAX_FILES = 5, MAX_BYTES = 8 * 1024 * 1024;
+  function human(b){
+    if (b < 1024) return b + ' B';
+    if (b < 1024*1024) return Math.round(b/1024) + ' KB';
+    return (b/1024/1024).toFixed(1) + ' MB';
+  }
+  [].forEach.call(document.querySelectorAll('input[type=file]'), function(inp){
+    var list = document.querySelector('.ma-files[data-for="' + inp.id + '"]');
+    inp.addEventListener('change', function(){
+      list.innerHTML = '';
+      var files = [].slice.call(inp.files), bad = [];
+      if (files.length > MAX_FILES){
+        bad.push('Please choose no more than ' + MAX_FILES + ' files.');
+        files = files.slice(0, MAX_FILES);
+      }
+      files.forEach(function(f){
+        var li = document.createElement('li');
+        var nm = document.createElement('span');
+        var sz = document.createElement('span');
+        nm.textContent = f.name;
+        sz.className = 'ma-sz';
+        if (f.size > MAX_BYTES){
+          sz.textContent = human(f.size) + ' — too large';
+          bad.push('“' + f.name + '” is over 8MB.');
+        } else {
+          sz.textContent = human(f.size);
+        }
+        li.appendChild(nm); li.appendChild(sz);
+        list.appendChild(li);
+      });
+      if (bad.length){ say(bad[0]); } else { say(''); }
+    });
+  });
+
+  /* ---- "unsure" and a typed size are mutually exclusive ---- */
+  var size = document.getElementById('f-size');
+  var unsure = document.querySelector('input[name="size_unsure"]');
+  if (size && unsure){
+    unsure.addEventListener('change', function(){ if (unsure.checked) size.value = ''; });
+    size.addEventListener('input', function(){ if (size.value) unsure.checked = false; });
+  }
+
+  /* ---- submit ---- */
+  var form = document.getElementById('ma-brief');
+  var err  = document.getElementById('ma-err');
+  var btn  = document.getElementById('ma-submit');
+  function say(m){ err.textContent = m || ''; err.classList.toggle('is-on', !!m); }
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var name  = document.getElementById('f-name');
+    var email = document.getElementById('f-email');
+
+    if (!name.value.trim()){
+      say('Please add your name.');
+      name.scrollIntoView({behavior:'smooth', block:'center'});
+      setTimeout(function(){ name.focus({preventScroll:true}); }, 400);
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.value.trim())){
+      say('Please check your email address — that’s where we’ll reply.');
+      email.scrollIntoView({behavior:'smooth', block:'center'});
+      setTimeout(function(){ email.focus({preventScroll:true}); }, 400);
+      return;
+    }
+    say('');
+    btn.disabled = true;
+    btn.textContent = 'Sending';
+
+    /* ---------------------------------------------------------------
+       PREVIEW ONLY — no mail is sent from this file.
+       On moreatelier.com.au this hands the FormData to Contact Form 7,
+       which carries the fields and both uploads to the inbox.
+    ---------------------------------------------------------------- */
+    setTimeout(function(){
+      var thanks = document.getElementById('ma-thanks');
+      thanks.classList.add('is-live');
+      thanks.scrollIntoView({behavior:'smooth', block:'center'});
+      setTimeout(onScroll, 100);
+    }, 650);
+  });
+
+  frame();
+})();
+</script>
+</body>
+</html>
