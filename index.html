@@ -184,7 +184,9 @@ body{
   font-family:var(--serif);font-weight:400;color:#fff;
   font-size:clamp(13px,1.02vw,18px);letter-spacing:.1em;text-transform:uppercase;
   opacity:0;transition:opacity .75s cubic-bezier(.4,0,.2,1);
-  text-shadow:0 1px 18px rgba(0,0,0,.22);
+  /* the footage is bright and warm; a tight shadow keeps the white marker
+     crisp on pale frames without dulling the image with a heavy scrim */
+  text-shadow:0 1px 2px rgba(0,0,0,.38), 0 2px 16px rgba(0,0,0,.30);
 }
 .ma-mk.is-on{opacity:1}
 
