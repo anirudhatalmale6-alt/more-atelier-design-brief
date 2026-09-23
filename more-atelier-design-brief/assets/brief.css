@@ -81,22 +81,31 @@ body{
 .ma-field{margin:0 0 2.6em}
 .ma-field:last-child{margin-bottom:0}
 
-.ma-in,.ma-ta{
+/* Note the element+class selectors. A theme almost always styles
+   `input[type="text"], input[type="email"], …`, and that beats a lone class —
+   on Ecomus it turned every text field into a rounded 45px box with a white
+   fill while the textareas stayed as lines, so the form looked half-finished.
+   `.ma-brief input.ma-in` outranks it without resorting to !important. */
+.ma-brief input.ma-in,
+.ma-brief textarea.ma-ta{
   display:block;width:100%;max-width:33em;
   font-family:var(--sans);font-weight:300;
   font-size:clamp(12px,.8vw,15px);letter-spacing:.02em;color:var(--ink);
   background:transparent;border:0;border-bottom:1px solid var(--rule);
   border-radius:0;padding:.35em 0 .55em;
+  height:auto;min-height:0;box-shadow:none;line-height:1.6;
   transition:border-color .3s ease;
 }
-.ma-in:hover,.ma-ta:hover{border-bottom-color:var(--rule-hover)}
-.ma-in:focus,.ma-ta:focus{outline:0;border-bottom-color:var(--ink)}
-.ma-ta{resize:none;overflow:hidden;min-height:2.4em;line-height:1.8}
+.ma-brief input.ma-in:hover,
+.ma-brief textarea.ma-ta:hover{border-bottom-color:var(--rule-hover)}
+.ma-brief input.ma-in:focus,
+.ma-brief textarea.ma-ta:focus{outline:0;border-bottom-color:var(--ink);box-shadow:none}
+.ma-brief textarea.ma-ta{resize:none;overflow:hidden;min-height:2.4em;line-height:1.8}
 .ma-in::placeholder,.ma-ta::placeholder{color:rgba(0,0,0,.25)}
 
 /* inline "___m2" */
 .ma-inline{display:flex;align-items:baseline;gap:.5em}
-.ma-inline .ma-in{width:7em;max-width:7em;text-align:left}
+.ma-brief .ma-inline input.ma-in{width:7em;max-width:7em;text-align:left}
 .ma-unit{font-size:clamp(11px,.72vw,13px);letter-spacing:.06em;color:var(--grey)}
 
 /* ---------- the thin open circles ---------- */
@@ -231,3 +240,12 @@ body{
 
 /* ---------- honeypot ---------- */
 .ma-hp{position:absolute!important;left:-9999px!important;width:1px;height:1px;overflow:hidden}
+
+/* ---------- the brief opens straight onto the film ----------
+   The theme prints a page-title band above the content (184px on Ecomus),
+   which pushed the whole layout down and meant the panel only pinned itself
+   after you had already scrolled past it. Scoped to the brief page only. */
+body.madb-page .page-header,
+body.madb-page .page-title,
+body.madb-page .entry-title,
+body.madb-page .wp-block-post-title{display:none}

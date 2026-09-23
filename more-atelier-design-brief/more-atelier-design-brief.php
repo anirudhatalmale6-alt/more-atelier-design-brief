@@ -2,7 +2,7 @@
 /**
  * Plugin Name: More Atelier — Design Brief
  * Description: The design brief enquiry form. Place [more_atelier_brief] on a page. Answers and uploads are emailed to the studio.
- * Version:     1.0.5
+ * Version:     1.0.6
  * Author:      Anirudha Talmale
  * License:     GPL-2.0-or-later
  * Text Domain: madb
@@ -10,7 +10,7 @@
 
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-define( 'MADB_VER',  '1.0.5' );
+define( 'MADB_VER',  '1.0.6' );
 define( 'MADB_FILE', __FILE__ );
 define( 'MADB_DIR',  plugin_dir_path( __FILE__ ) );
 define( 'MADB_URL',  plugin_dir_url( __FILE__ ) );
