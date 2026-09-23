@@ -23,7 +23,25 @@ body{
 /* kill the theme's own scroll-reveal on our panels if dropped into Elementor */
 .ma-brief [data-animate]{opacity:1!important;transform:none!important}
 
-.ma-brief{display:flex;align-items:flex-start;position:relative}
+/* The brief is a full-bleed layout, but almost every page template drops its
+   content into a centred, max-width column — which would squeeze the 50/50
+   split into the middle of the screen. Break out of whatever that column is,
+   so this works on any theme or template without the client choosing one. */
+.ma-brief{
+  display:flex;align-items:flex-start;position:relative;
+  /* !important because block-theme layout rules (.is-layout-constrained > *)
+     set their own margins on every child and would otherwise re-centre this
+     back inside the content column. */
+  width:100vw !important;max-width:100vw !important;
+  margin-left:calc(50% - 50vw) !important;
+  margin-right:calc(50% - 50vw) !important;
+}
+/* 100vw counts the scrollbar's width, which would leave a sideways scroll.
+   `clip` trims it WITHOUT creating a scroll container — `hidden` here would
+   silently break position:sticky and the panel would scroll away. */
+@supports (overflow:clip){
+  html.madb-page,body.madb-page{overflow-x:clip}
+}
 
 /* ---------- left: the scrolling brief ---------- */
 .ma-flow{width:50%;flex:0 0 50%;position:relative;z-index:2}

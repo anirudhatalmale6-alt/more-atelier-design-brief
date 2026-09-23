@@ -2,7 +2,7 @@
 /**
  * Plugin Name: More Atelier — Design Brief
  * Description: The design brief enquiry form. Place [more_atelier_brief] on a page. Answers and uploads are emailed to the studio.
- * Version:     1.0.1
+ * Version:     1.0.2
  * Author:      Anirudha Talmale
  * License:     GPL-2.0-or-later
  * Text Domain: madb
@@ -10,7 +10,7 @@
 
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-define( 'MADB_VER',  '1.0.1' );
+define( 'MADB_VER',  '1.0.2' );
 define( 'MADB_FILE', __FILE__ );
 define( 'MADB_DIR',  plugin_dir_path( __FILE__ ) );
 define( 'MADB_URL',  plugin_dir_url( __FILE__ ) );
@@ -143,6 +143,16 @@ add_action( 'wp_enqueue_scripts', function () {
 		'maxFiles'  => MADB_MAX_FILES,
 		'maxBytes'  => madb_max_file_bytes(),
 	) );
+} );
+
+/** Body class so the full-bleed breakout can trim the scrollbar overflow. */
+add_filter( 'body_class', function ( $classes ) {
+	if ( ! is_singular() ) { return $classes; }
+	$post = get_post();
+	if ( $post && has_shortcode( $post->post_content, 'more_atelier_brief' ) ) {
+		$classes[] = 'madb-page';
+	}
+	return $classes;
 } );
 
 /* -------------------------------------------------------------------------
