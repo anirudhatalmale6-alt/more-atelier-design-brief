@@ -1,0 +1,213 @@
+/* ------------------------------------------------------------------
+   MORE ATELIER — DESIGN BRIEF
+   Bradford LL / Acumin Pro are already self-hosted by the Ecomus theme,
+   so on moreatelier.com.au these resolve to the real site faces.
+   The stacks below only matter in local preview.
+------------------------------------------------------------------- */
+:root{
+  --ink:#1a1a1a;
+  --grey:#545454;
+  --rule:rgba(0,0,0,.22);
+  --rule-hover:rgba(0,0,0,.55);
+  --serif:'BradfordLLTT-Light','Bradford LL',Georgia,'Times New Roman',serif;
+  --sans:'AcuminPro-Light','Acumin Pro','Helvetica Neue',Helvetica,Arial,sans-serif;
+  --pad:7.5vw;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:#fff;color:var(--ink);
+  font-family:var(--sans);font-weight:300;
+  -webkit-font-smoothing:antialiased;
+}
+/* kill the theme's own scroll-reveal on our panels if dropped into Elementor */
+.ma-brief [data-animate]{opacity:1!important;transform:none!important}
+
+.ma-brief{display:flex;align-items:flex-start;position:relative}
+
+/* ---------- left: the scrolling brief ---------- */
+.ma-flow{width:50%;flex:0 0 50%;position:relative;z-index:2}
+
+.ma-panel{
+  min-height:100vh;display:flex;flex-direction:column;justify-content:center;
+  padding:12vh var(--pad);
+  opacity:0;transition:opacity .55s cubic-bezier(.4,0,.2,1);
+  will-change:opacity;
+}
+.ma-panel.is-on{opacity:1}
+
+/* ---------- typography ---------- */
+.ma-h{
+  font-family:var(--serif);font-weight:400;
+  font-size:clamp(13px,1.02vw,17px);letter-spacing:.06em;
+  text-transform:uppercase;color:var(--ink);
+  margin:0 0 1.9em;
+}
+.ma-lede{
+  font-size:clamp(12px,.78vw,14px);line-height:1.85;letter-spacing:.03em;
+  color:var(--grey);max-width:34em;margin:0 0 1.5em;
+}
+.ma-lede:last-child{margin-bottom:0}
+.ma-q{
+  display:block;
+  font-size:clamp(10px,.66vw,12px);letter-spacing:.14em;
+  text-transform:uppercase;color:var(--grey);
+  margin:0 0 .5em;
+}
+.ma-note{
+  font-size:clamp(11px,.72vw,13px);line-height:1.75;letter-spacing:.02em;
+  color:var(--grey);max-width:36em;margin:-.15em 0 1.15em;
+}
+
+/* ---------- fields: a hairline rule, never a box ---------- */
+.ma-field{margin:0 0 2.6em}
+.ma-field:last-child{margin-bottom:0}
+
+.ma-in,.ma-ta{
+  display:block;width:100%;max-width:33em;
+  font-family:var(--sans);font-weight:300;
+  font-size:clamp(12px,.8vw,15px);letter-spacing:.02em;color:var(--ink);
+  background:transparent;border:0;border-bottom:1px solid var(--rule);
+  border-radius:0;padding:.35em 0 .55em;
+  transition:border-color .3s ease;
+}
+.ma-in:hover,.ma-ta:hover{border-bottom-color:var(--rule-hover)}
+.ma-in:focus,.ma-ta:focus{outline:0;border-bottom-color:var(--ink)}
+.ma-ta{resize:none;overflow:hidden;min-height:2.4em;line-height:1.8}
+.ma-in::placeholder,.ma-ta::placeholder{color:rgba(0,0,0,.25)}
+
+/* inline "___m2" */
+.ma-inline{display:flex;align-items:baseline;gap:.5em}
+.ma-inline .ma-in{width:7em;max-width:7em;text-align:left}
+.ma-unit{font-size:clamp(11px,.72vw,13px);letter-spacing:.06em;color:var(--grey)}
+
+/* ---------- the thin open circles ---------- */
+.ma-opts{margin:.9em 0 0;display:flex;flex-direction:column;gap:.62em}
+.ma-opt{display:flex;align-items:flex-start;gap:.72em;cursor:pointer;max-width:36em}
+.ma-opt input{position:absolute;opacity:0;width:0;height:0}
+.ma-dot{
+  flex:0 0 auto;width:9px;height:9px;margin-top:.26em;
+  border:1px solid rgba(0,0,0,.42);border-radius:50%;
+  position:relative;transition:border-color .25s ease;
+}
+.ma-opt:hover .ma-dot{border-color:var(--ink)}
+.ma-dot::after{
+  content:'';position:absolute;inset:1.4px;border-radius:50%;
+  background:var(--ink);opacity:0;transform:scale(.3);
+  transition:opacity .22s ease,transform .22s ease;
+}
+.ma-opt input:checked + .ma-dot{border-color:var(--ink)}
+.ma-opt input:checked + .ma-dot::after{opacity:1;transform:scale(1)}
+.ma-opt input:focus-visible + .ma-dot{box-shadow:0 0 0 3px rgba(0,0,0,.1)}
+.ma-optlabel{
+  font-size:clamp(10px,.66vw,12px);letter-spacing:.11em;
+  text-transform:uppercase;color:var(--grey);line-height:1.5;
+}
+.ma-opt input:checked ~ .ma-optlabel{color:var(--ink)}
+/* the sentence-case options in THE INVESTMENT / OUR INVOLVEMENT */
+.ma-optlabel.is-sentence{text-transform:none;letter-spacing:.02em;font-size:clamp(11px,.74vw,13px)}
+.ma-optdesc{
+  font-size:clamp(11px,.72vw,13px);line-height:1.7;letter-spacing:.02em;
+  color:var(--grey);margin:.3em 0 .55em;padding-left:1.52em;max-width:34em;
+}
+
+/* ---------- upload ---------- */
+.ma-up{margin-top:1.4em}
+.ma-up input[type=file]{position:absolute;opacity:0;width:0;height:0}
+.ma-uplabel{
+  display:inline-block;cursor:pointer;
+  font-size:clamp(10px,.66vw,12px);letter-spacing:.14em;text-transform:uppercase;
+  color:var(--grey);padding-bottom:.35em;border-bottom:1px solid transparent;
+  transition:color .3s ease,border-color .3s ease;
+}
+.ma-uplabel:hover{color:var(--ink);border-bottom-color:var(--rule)}
+.ma-files{margin:.9em 0 0;padding:0;list-style:none}
+.ma-files li{
+  font-size:clamp(10px,.66vw,12px);letter-spacing:.06em;color:var(--grey);
+  padding:.32em 0;border-bottom:1px solid rgba(0,0,0,.08);
+  display:flex;justify-content:space-between;gap:1em;max-width:33em;
+}
+.ma-files .ma-sz{color:rgba(0,0,0,.3);white-space:nowrap}
+.ma-uphint{
+  font-size:clamp(10px,.64vw,11px);letter-spacing:.05em;color:rgba(0,0,0,.3);
+  margin:.7em 0 0;
+}
+
+/* ---------- submit ---------- */
+.ma-foot{margin-top:4.5em;display:flex;justify-content:flex-end;align-items:center;gap:2em;max-width:33em}
+.ma-submit{
+  font-family:var(--serif);font-weight:400;
+  font-size:clamp(12px,.92vw,15px);letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink);background:transparent;border:0;cursor:pointer;
+  padding:.4em 0;border-bottom:1px solid transparent;
+  transition:border-color .35s ease,opacity .3s ease;
+}
+.ma-submit:hover{border-bottom-color:var(--ink)}
+.ma-submit[disabled]{opacity:.35;cursor:default;border-bottom-color:transparent}
+.ma-err{
+  font-size:clamp(10px,.66vw,12px);letter-spacing:.08em;color:#8a4b3c;
+  margin-right:auto;opacity:0;transition:opacity .3s ease;
+}
+.ma-err.is-on{opacity:1}
+
+/* ---------- right: the sticky film ---------- */
+.ma-stage{
+  width:50%;flex:0 0 50%;position:sticky;top:0;height:100vh;
+  overflow:hidden;background:#b9a48c;z-index:1;
+}
+.ma-stage video,.ma-stage img.ma-poster{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;display:block;
+}
+.ma-stage video{z-index:2;opacity:0;transition:opacity 1.1s ease}
+.ma-stage video.is-ready{opacity:1}
+.ma-scrim{position:absolute;inset:0;z-index:3;background:linear-gradient(180deg,rgba(0,0,0,.10),rgba(0,0,0,.16))}
+
+/* the marker: number at the left edge, title at the right, on one line */
+.ma-marker{
+  position:absolute;z-index:4;left:0;right:0;top:50%;transform:translateY(-50%);
+  padding:0 5.5%;
+  display:flex;justify-content:space-between;align-items:baseline;
+  pointer-events:none;
+}
+.ma-mk{
+  position:absolute;left:0;right:0;padding:0 5.5%;
+  display:flex;justify-content:space-between;align-items:baseline;
+  font-family:var(--serif);font-weight:400;color:#fff;
+  font-size:clamp(13px,1.02vw,18px);letter-spacing:.1em;text-transform:uppercase;
+  opacity:0;transition:opacity .75s cubic-bezier(.4,0,.2,1);
+  text-shadow:0 1px 18px rgba(0,0,0,.22);
+}
+.ma-mk.is-on{opacity:1}
+
+/* ---------- thank you ---------- */
+#ma-thanks{display:none}
+#ma-thanks.is-live{display:flex}
+
+/* ---------- phones / tablets: stack, film above the questions ---------- */
+@media (max-width:900px){
+  :root{--pad:8vw}
+  /* stay flex so the film can be ordered ABOVE the questions — it sits
+     after them in the DOM so that desktop keeps the form in the tab order first */
+  .ma-brief{flex-direction:column;align-items:stretch}
+  .ma-flow{width:100%;flex:1 1 auto;order:2}
+  .ma-stage{
+    width:100%;flex:0 0 auto;order:1;
+    position:sticky;top:0;height:38vh;z-index:5;
+  }
+  .ma-panel{min-height:auto;padding:7vh var(--pad);opacity:1}
+  .ma-panel.is-on{opacity:1}
+  .ma-mk{font-size:11px;letter-spacing:.08em}
+  .ma-q{letter-spacing:.09em}
+  .ma-optlabel{letter-spacing:.07em}
+  .ma-uplabel{letter-spacing:.09em}
+  .ma-in,.ma-ta{max-width:none}
+  .ma-foot{max-width:none;justify-content:flex-start;margin-top:3em}
+}
+@media (prefers-reduced-motion:reduce){
+  .ma-panel,.ma-mk,.ma-stage video{transition:none}
+  .ma-panel{opacity:1}
+}
+
+/* ---------- honeypot ---------- */
+.ma-hp{position:absolute!important;left:-9999px!important;width:1px;height:1px;overflow:hidden}
