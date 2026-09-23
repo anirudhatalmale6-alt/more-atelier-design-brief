@@ -2,7 +2,7 @@
 /**
  * Plugin Name: More Atelier — Design Brief
  * Description: The design brief enquiry form. Place [more_atelier_brief] on a page. Answers and uploads are emailed to the studio.
- * Version:     1.0.3
+ * Version:     1.0.4
  * Author:      Anirudha Talmale
  * License:     GPL-2.0-or-later
  * Text Domain: madb
@@ -10,7 +10,7 @@
 
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-define( 'MADB_VER',  '1.0.3' );
+define( 'MADB_VER',  '1.0.4' );
 define( 'MADB_FILE', __FILE__ );
 define( 'MADB_DIR',  plugin_dir_path( __FILE__ ) );
 define( 'MADB_URL',  plugin_dir_url( __FILE__ ) );
@@ -46,6 +46,30 @@ function madb_max_file_bytes() {
 
 	$max = (int) min( $limits );
 	return $max;
+}
+
+/**
+ * Does this post carry the brief?
+ *
+ * Checks the Elementor payload as well as post_content. If the page is built
+ * with Elementor, the shortcode lives in the `_elementor_data` meta and
+ * post_content can be empty or stale — so a plain has_shortcode() check would
+ * say no, and then the styles would never load and the page would never be set
+ * to noindex. Both of those fail silently, which is the worst kind.
+ */
+function madb_post_has_brief( $post = null ) {
+	$post = get_post( $post );
+	if ( ! $post ) { return false; }
+
+	if ( has_shortcode( (string) $post->post_content, 'more_atelier_brief' ) ) { return true; }
+
+	$elementor = get_post_meta( $post->ID, '_elementor_data', true );
+	if ( is_array( $elementor ) ) { $elementor = wp_json_encode( $elementor ); }
+	if ( is_string( $elementor ) && '' !== $elementor && false !== strpos( $elementor, 'more_atelier_brief' ) ) {
+		return true;
+	}
+
+	return false;
 }
 
 /** Kept for readability at the call sites. */
@@ -126,9 +150,7 @@ function madb_settings_page() {
  * Assets — only on pages that actually carry the shortcode.
  * ---------------------------------------------------------------------- */
 add_action( 'wp_enqueue_scripts', function () {
-	if ( ! is_singular() ) { return; }
-	$post = get_post();
-	if ( ! $post || ! has_shortcode( $post->post_content, 'more_atelier_brief' ) ) { return; }
+	if ( ! is_singular() || ! madb_post_has_brief() ) { return; }
 
 	wp_enqueue_style( 'madb', MADB_URL . 'assets/brief.css', array(), MADB_VER );
 
@@ -149,9 +171,7 @@ add_action( 'wp_enqueue_scripts', function () {
 
 /** Body class so the full-bleed breakout can trim the scrollbar overflow. */
 add_filter( 'body_class', function ( $classes ) {
-	if ( ! is_singular() ) { return $classes; }
-	$post = get_post();
-	if ( $post && has_shortcode( $post->post_content, 'more_atelier_brief' ) ) {
+	if ( is_singular() && madb_post_has_brief() ) {
 		$classes[] = 'madb-page';
 	}
 	return $classes;
@@ -164,7 +184,7 @@ function madb_brief_page_id() {
 	$id = 0;
 	$pages = get_posts( array( 'post_type' => 'page', 'numberposts' => 200, 'fields' => 'ids' ) );
 	foreach ( $pages as $pid ) {
-		if ( has_shortcode( (string) get_post_field( 'post_content', $pid ), 'more_atelier_brief' ) ) {
+		if ( madb_post_has_brief( $pid ) ) {
 			$id = (int) $pid;
 			break;
 		}

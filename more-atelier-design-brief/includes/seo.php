@@ -16,9 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
 
 /** Is the thing currently being viewed the brief page? */
 function madb_is_brief_page() {
-	if ( ! is_singular() ) { return false; }
-	$post = get_post();
-	return $post && has_shortcode( (string) $post->post_content, 'more_atelier_brief' );
+	return is_singular() && madb_post_has_brief();
 }
 
 function madb_rank_math_active() { return defined( 'RANK_MATH_VERSION' ) || class_exists( 'RankMath' ); }
