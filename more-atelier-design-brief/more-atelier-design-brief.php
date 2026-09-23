@@ -2,7 +2,7 @@
 /**
  * Plugin Name: More Atelier — Design Brief
  * Description: The design brief enquiry form. Place [more_atelier_brief] on a page. Answers and uploads are emailed to the studio.
- * Version:     1.0.4
+ * Version:     1.0.5
  * Author:      Anirudha Talmale
  * License:     GPL-2.0-or-later
  * Text Domain: madb
@@ -10,7 +10,7 @@
 
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-define( 'MADB_VER',  '1.0.4' );
+define( 'MADB_VER',  '1.0.5' );
 define( 'MADB_FILE', __FILE__ );
 define( 'MADB_DIR',  plugin_dir_path( __FILE__ ) );
 define( 'MADB_URL',  plugin_dir_url( __FILE__ ) );
@@ -72,6 +72,53 @@ function madb_post_has_brief( $post = null ) {
 	return false;
 }
 
+/**
+ * Unwrap a redirect-tracker URL.
+ *
+ * Copying a link out of a chat app often yields the app's click-tracker rather
+ * than the file — Freelancer rewrites links as
+ * `freelancer.com/users/l.php?url=<encoded>&sig=...`. Pasted into the video or
+ * image box that gives a broken panel with no clue why, so dig the real URL
+ * back out instead of storing the wrapper.
+ */
+function madb_unwrap_url( $url ) {
+	$url = trim( (string) $url );
+	if ( '' === $url ) { return ''; }
+
+	for ( $i = 0; $i < 3; $i++ ) { // a wrapper can wrap a wrapper
+		$query = wp_parse_url( $url, PHP_URL_QUERY );
+		if ( ! $query ) { break; }
+		parse_str( $query, $args );
+		if ( empty( $args['url'] ) ) { break; }
+		$inner = urldecode( $args['url'] );
+		if ( ! preg_match( '#^https?://#i', $inner ) ) { break; }
+		$url = $inner;
+	}
+	return $url;
+}
+
+/**
+ * Does this URL actually serve the kind of file we expect? Returns '' when fine,
+ * otherwise a sentence for the settings screen.
+ */
+function madb_check_media_url( $url, $expect ) {
+	if ( '' === $url ) { return ''; }
+	$res = wp_remote_head( $url, array( 'timeout' => 8, 'redirection' => 3 ) );
+	if ( is_wp_error( $res ) ) {
+		return 'could not be reached (' . $res->get_error_message() . ')';
+	}
+	$code = (int) wp_remote_retrieve_response_code( $res );
+	if ( $code >= 400 ) {
+		return 'returned HTTP ' . $code;
+	}
+	$type = strtolower( (string) wp_remote_retrieve_header( $res, 'content-type' ) );
+	if ( '' !== $type && 0 !== strpos( $type, $expect ) ) {
+		$parts = explode( ';', $type );
+		return 'is being served as ' . $parts[0] . ', not ' . $expect;
+	}
+	return '';
+}
+
 /** Kept for readability at the call sites. */
 function madb_max_files() { return MADB_MAX_FILES; }
 
@@ -98,8 +145,8 @@ add_action( 'admin_init', function () {
 		'sanitize_callback' => function ( $in ) {
 			return array(
 				'to'        => sanitize_text_field( $in['to'] ?? '' ),
-				'video_url' => esc_url_raw( $in['video_url'] ?? '' ),
-				'poster_url'=> esc_url_raw( $in['poster_url'] ?? '' ),
+				'video_url' => esc_url_raw( madb_unwrap_url( $in['video_url'] ?? '' ) ),
+				'poster_url'=> esc_url_raw( madb_unwrap_url( $in['poster_url'] ?? '' ) ),
 			);
 		},
 	) );
@@ -142,6 +189,21 @@ function madb_settings_page() {
 		</form>
 		<p>Put <code>[more_atelier_brief]</code> on the page you want the brief to appear on.</p>
 		<p><strong>Privacy:</strong> <?php echo esc_html( madb_seo_status() ); ?></p>
+		<?php
+		foreach ( array( 'video_url' => 'video', 'poster_url' => 'image' ) as $madb_k => $madb_expect ) {
+			$madb_u = madb_opt( $madb_k );
+			if ( '' === $madb_u ) { continue; }
+			$madb_problem = madb_check_media_url( $madb_u, $madb_expect );
+			if ( $madb_problem ) {
+				printf(
+					'<div class="notice notice-error inline"><p>The %s URL %s. Upload the file to Media and paste the link from there - a link copied out of a chat app is often a redirect rather than the file itself.</p></div>',
+					esc_html( $madb_expect ), esc_html( $madb_problem )
+				);
+			} else {
+				printf( '<div class="notice notice-success inline"><p>The %s loads correctly.</p></div>', esc_html( $madb_expect ) );
+			}
+		}
+		?>
 	</div>
 	<?php
 }

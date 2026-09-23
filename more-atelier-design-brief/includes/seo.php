@@ -8,8 +8,9 @@
  * instructions and Rank Math's "index, follow" could be the one that wins —
  * the page would look hidden to us and be perfectly visible to Google.
  *
- * So: if an SEO plugin is in charge, tell IT to say noindex. Only print our own
- * tag when nothing else is doing the job.
+ * So: always set noindex on WordPress's own robots tag, AND tell any SEO plugin
+ * to say noindex too. Both routes agree, and a plugin that is installed but not
+ * yet configured cannot leave the page silently indexable.
  */
 
 if ( ! defined( 'ABSPATH' ) ) { exit; }
