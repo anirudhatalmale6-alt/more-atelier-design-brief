@@ -2,7 +2,7 @@
 /**
  * Plugin Name: More Atelier — Design Brief
  * Description: The design brief enquiry form. Place [more_atelier_brief] on a page. Answers and uploads are emailed to the studio.
- * Version:     1.0.2
+ * Version:     1.0.3
  * Author:      Anirudha Talmale
  * License:     GPL-2.0-or-later
  * Text Domain: madb
@@ -10,7 +10,7 @@
 
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-define( 'MADB_VER',  '1.0.2' );
+define( 'MADB_VER',  '1.0.3' );
 define( 'MADB_FILE', __FILE__ );
 define( 'MADB_DIR',  plugin_dir_path( __FILE__ ) );
 define( 'MADB_URL',  plugin_dir_url( __FILE__ ) );
@@ -51,6 +51,7 @@ function madb_max_file_bytes() {
 /** Kept for readability at the call sites. */
 function madb_max_files() { return MADB_MAX_FILES; }
 
+require_once MADB_DIR . 'includes/seo.php';
 require_once MADB_DIR . 'includes/fonts.php';
 require_once MADB_DIR . 'includes/schema.php';
 require_once MADB_DIR . 'includes/render.php';
@@ -116,6 +117,7 @@ function madb_settings_page() {
 			<?php submit_button(); ?>
 		</form>
 		<p>Put <code>[more_atelier_brief]</code> on the page you want the brief to appear on.</p>
+		<p><strong>Privacy:</strong> <?php echo esc_html( madb_seo_status() ); ?></p>
 	</div>
 	<?php
 }
@@ -153,34 +155,6 @@ add_filter( 'body_class', function ( $classes ) {
 		$classes[] = 'madb-page';
 	}
 	return $classes;
-} );
-
-/* -------------------------------------------------------------------------
- * The brief is for people he sends the link to — keep it out of search.
- * ---------------------------------------------------------------------- */
-add_action( 'wp_head', function () {
-	if ( ! is_singular() ) { return; }
-	$post = get_post();
-	if ( ! $post || ! has_shortcode( $post->post_content, 'more_atelier_brief' ) ) { return; }
-	echo '<meta name="robots" content="noindex, nofollow, noarchive">' . "\n";
-}, 1 );
-
-/* Belt and braces: keep it out of sitemaps and out of site search too. */
-add_filter( 'wp_sitemaps_posts_query_args', function ( $args, $type ) {
-	if ( 'page' !== $type ) { return $args; }
-	$id = madb_brief_page_id();
-	if ( $id ) {
-		$args['post__not_in'] = array_merge( $args['post__not_in'] ?? array(), array( $id ) );
-	}
-	return $args;
-}, 10, 2 );
-
-add_action( 'pre_get_posts', function ( $q ) {
-	if ( is_admin() || ! $q->is_search() || ! $q->is_main_query() ) { return; }
-	$id = madb_brief_page_id();
-	if ( $id ) {
-		$q->set( 'post__not_in', array_merge( (array) $q->get( 'post__not_in' ), array( $id ) ) );
-	}
 } );
 
 /** Page carrying the shortcode, cached for a day. */
