@@ -1,0 +1,205 @@
+/* ------------------------------------------------------------------
+   MORE ATELIER — Contact Form 7 forms, dressed to match the brief.
+
+   Scoped to `.wpcf7-form` throughout: the contact page also carries a
+   WooCommerce login form, and that must be left exactly as it is.
+
+   Element+class selectors again (`.wpcf7-form input[type="text"]`), because
+   the Ecomus theme styles bare `input[type="text"]` and would otherwise win.
+------------------------------------------------------------------- */
+.wpcf7-form{
+  --ma-ink:#1a1a1a;
+  --ma-grey:#545454;
+  --ma-rule:rgba(0,0,0,.22);
+  --ma-rule-hover:rgba(0,0,0,.55);
+  --ma-serif:'BradfordLLTT-Light','Bradford LL',Georgia,'Times New Roman',serif;
+  --ma-sans:'AcuminPro-Light','Acumin Pro','Helvetica Neue',Helvetica,Arial,sans-serif;
+}
+
+/* ---------- text fields: a hairline, never a box ---------- */
+.wpcf7-form input[type="text"],
+.wpcf7-form input[type="email"],
+.wpcf7-form input[type="tel"],
+.wpcf7-form input[type="url"],
+.wpcf7-form input[type="number"],
+.wpcf7-form input[type="date"],
+.wpcf7-form select,
+.wpcf7-form textarea{
+  font-family:var(--ma-sans);font-weight:300;
+  font-size:clamp(12px,.8vw,15px);letter-spacing:.02em;color:var(--ma-ink);
+  background:transparent;
+  border:0;border-bottom:1px solid var(--ma-rule);border-radius:0;
+  padding:.35em 0 .55em;
+  height:auto;min-height:0;box-shadow:none;line-height:1.6;
+  width:100%;
+  transition:border-color .3s ease;
+}
+.wpcf7-form input[type="text"]:hover,
+.wpcf7-form input[type="email"]:hover,
+.wpcf7-form input[type="tel"]:hover,
+.wpcf7-form textarea:hover{border-bottom-color:var(--ma-rule-hover)}
+
+.wpcf7-form input[type="text"]:focus,
+.wpcf7-form input[type="email"]:focus,
+.wpcf7-form input[type="tel"]:focus,
+.wpcf7-form input[type="url"]:focus,
+.wpcf7-form select:focus,
+.wpcf7-form textarea:focus{
+  outline:0;border-bottom-color:var(--ma-ink);box-shadow:none;
+}
+
+/* the message field grows with the answer instead of being a fixed rectangle */
+.wpcf7-form textarea{
+  resize:none;overflow:hidden;min-height:2.4em;line-height:1.8;
+}
+
+.wpcf7-form input::placeholder,
+.wpcf7-form textarea::placeholder{color:rgba(0,0,0,.25)}
+
+/* ---------- the thin open circles, in place of the default squares ---------- */
+.wpcf7-form .wpcf7-checkbox .wpcf7-list-item,
+.wpcf7-form .wpcf7-radio .wpcf7-list-item{
+  display:block;margin:0 0 .62em;
+}
+.wpcf7-form .wpcf7-list-item label{
+  display:flex;align-items:flex-start;gap:.72em;cursor:pointer;
+}
+.wpcf7-form .wpcf7-list-item input[type="checkbox"],
+.wpcf7-form .wpcf7-list-item input[type="radio"]{
+  appearance:none;-webkit-appearance:none;
+  flex:0 0 auto;width:9px;height:9px;margin:.26em 0 0;padding:0;
+  border:1px solid rgba(0,0,0,.42);border-radius:50%;
+  background:transparent;box-shadow:none;
+  transition:border-color .25s ease,background-color .22s ease,box-shadow .22s ease;
+}
+.wpcf7-form .wpcf7-list-item label:hover input[type="checkbox"],
+.wpcf7-form .wpcf7-list-item label:hover input[type="radio"]{border-color:var(--ma-ink)}
+
+/* filled centre with a hairline gap, matching the brief's dot */
+.wpcf7-form .wpcf7-list-item input[type="checkbox"]:checked,
+.wpcf7-form .wpcf7-list-item input[type="radio"]:checked{
+  border-color:var(--ma-ink);
+  background-color:var(--ma-ink);
+  box-shadow:inset 0 0 0 1.4px #fff;
+}
+.wpcf7-form .wpcf7-list-item input:focus-visible{
+  outline:0;box-shadow:0 0 0 3px rgba(0,0,0,.1);
+}
+.wpcf7-form .wpcf7-list-item-label{
+  font-family:var(--ma-sans);
+  font-size:clamp(10px,.66vw,12px);letter-spacing:.11em;
+  text-transform:uppercase;color:var(--ma-grey);line-height:1.5;
+}
+.wpcf7-form .wpcf7-list-item input:checked ~ .wpcf7-list-item-label{color:var(--ma-ink)}
+
+/* two-up on wider screens, mirroring how his Service options already sit */
+@media (min-width:768px){
+  .wpcf7-form .wpcf7-checkbox.ma-two-up,
+  .wpcf7-form .wpcf7-radio.ma-two-up{
+    display:grid;grid-template-columns:1fr 1fr;column-gap:2em;
+  }
+}
+
+/* ---------- submit ---------- */
+.wpcf7-form input[type="submit"],
+.wpcf7-form button[type="submit"]{
+  font-family:var(--ma-serif);font-weight:400;
+  font-size:clamp(12px,.92vw,15px);letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ma-ink);background:transparent;
+  border:0;border-bottom:1px solid transparent;border-radius:0;
+  padding:.4em 0;cursor:pointer;width:auto;
+  transition:border-color .35s ease,opacity .3s ease;
+}
+.wpcf7-form input[type="submit"]:hover,
+.wpcf7-form button[type="submit"]:hover{border-bottom-color:var(--ma-ink)}
+.wpcf7-form input[type="submit"]:disabled{opacity:.35;cursor:default}
+
+/* ---------- CF7's own messages, in the same quiet register ---------- */
+.wpcf7-form .wpcf7-not-valid-tip{
+  font-family:var(--ma-sans);
+  font-size:clamp(10px,.66vw,12px);letter-spacing:.06em;
+  color:#8a4b3c;margin-top:.4em;
+}
+.wpcf7-form .wpcf7-response-output{
+  font-family:var(--ma-sans);
+  font-size:clamp(11px,.72vw,13px);letter-spacing:.03em;line-height:1.7;
+  border:0;border-top:1px solid var(--ma-rule);
+  margin:2.2em 0 0;padding:1.1em 0 0;color:var(--ma-grey);
+}
+.wpcf7-form.invalid .wpcf7-response-output,
+.wpcf7-form.failed .wpcf7-response-output{color:#8a4b3c}
+
+/* CF7's spinner is a dark blob by default */
+.wpcf7-form .wpcf7-spinner{
+  background-color:rgba(0,0,0,.25);margin:0 0 0 .8em;
+}
+
+/* ------------------------------------------------------------------
+   Site-specific overrides for moreatelier.com.au.
+
+   Three other sources style this form, two of them with !important:
+
+   1. A Simple Custom CSS & JS snippet (6717.css) from the previous developer:
+      `.form-styling .wpcf7-form p:nth-child(8) label .wpcf7-form-control-wrap
+      .wpcf7-textarea` -> border 1px + height:100px !important, and a matching
+      rule forcing the tick boxes to 25px. Specificity (0,5,2) — a sensible
+      selector loses to it. THAT is why the form was called unchangeable.
+   2. Elementor's per-element CSS on that page draws the underline beneath the
+      text fields with `box-shadow: inset 0 -1px 0 #000 !important`, NOT a
+      border. Overriding border-bottom alone appears to do nothing. Leave it.
+   3. The Ecomus theme's own `input[type="text"], …` rules.
+
+   The selectors below reach (0,5,4) using the textarea's own two CF7 classes,
+   and use NO :nth-child — so re-ordering or adding a field cannot break them.
+------------------------------------------------------------------- */
+body .form-styling .wpcf7-form p label .wpcf7-form-control-wrap textarea.wpcf7-form-control.wpcf7-textarea{
+  display:block !important;
+  border:0 !important;
+  border-bottom:1px solid rgba(0,0,0,.22) !important;
+  border-radius:0 !important;
+  min-height:0 !important;
+  padding:.35em 0 .55em !important;
+  background:transparent !important;box-shadow:none !important;
+  resize:none !important;overflow:hidden !important;
+}
+/* keep his two-up arrangement for the option list */
+body .form-styling .wpcf7-form p .wpcf7-checkbox .wpcf7-list-item{
+  flex:0 0 46% !important;max-width:46% !important;
+}
+body .form-styling .wpcf7-form p .wpcf7-checkbox .wpcf7-list-item label{
+  display:flex !important;align-items:flex-start !important;
+}
+
+/* the tick boxes -> the brief's thin open circles.
+   Beats `… p:nth-child(7) .wpcf7-checkbox .wpcf7-list-item input`
+   (width:25px !important) by adding `body` and `label` to the chain. */
+body .form-styling .wpcf7-form p .wpcf7-checkbox .wpcf7-list-item label input[type="checkbox"],
+body .form-styling .wpcf7-form p .wpcf7-radio .wpcf7-list-item label input[type="radio"]{
+  appearance:none !important;-webkit-appearance:none !important;
+  width:9px !important;height:9px !important;
+  min-width:0 !important;min-height:0 !important;flex:0 0 auto !important;
+  margin:.3em .72em 0 0 !important;padding:0 !important;
+  border:1px solid rgba(0,0,0,.42) !important;
+  border-radius:50% !important;
+  background-color:transparent !important;
+  box-shadow:none !important;
+}
+body .form-styling .wpcf7-form p .wpcf7-checkbox .wpcf7-list-item label input[type="checkbox"]:checked,
+body .form-styling .wpcf7-form p .wpcf7-radio .wpcf7-list-item label input[type="radio"]:checked{
+  border-color:#1a1a1a !important;
+  background-color:#1a1a1a !important;
+  box-shadow:inset 0 0 0 1.4px #fff !important;
+}
+
+/* CF7 puts a <br> between a label and its field. His other fields are display:block
+   so the break is redundant there, but on the message field it left the rule sitting
+   ~90px under its label where the others sit ~35px. Drop the break and let the
+   wrapper be a block so the spacing matches the rest of the form. */
+body .form-styling .wpcf7-form p label br{display:none !important}
+body .form-styling .wpcf7-form p label .wpcf7-form-control-wrap[data-name]{
+  display:block !important;margin-top:0 !important;
+  height:auto !important;min-height:0 !important;
+  /* NOTE: do not zero line-height/font-size here to tighten the gap above the
+     rule — CF7's validation message sits inside this wrapper and would be
+     hidden. The extra space comes from the old snippet; left as is. */
+}

@@ -2,7 +2,7 @@
 /**
  * Plugin Name: More Atelier — Design Brief
  * Description: The design brief enquiry form. Place [more_atelier_brief] on a page. Answers and uploads are emailed to the studio.
- * Version:     1.0.6
+ * Version:     1.1.0
  * Author:      Anirudha Talmale
  * License:     GPL-2.0-or-later
  * Text Domain: madb
@@ -10,7 +10,7 @@
 
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-define( 'MADB_VER',  '1.0.6' );
+define( 'MADB_VER',  '1.1.0' );
 define( 'MADB_FILE', __FILE__ );
 define( 'MADB_DIR',  plugin_dir_path( __FILE__ ) );
 define( 'MADB_URL',  plugin_dir_url( __FILE__ ) );
@@ -123,6 +123,7 @@ function madb_check_media_url( $url, $expect ) {
 function madb_max_files() { return MADB_MAX_FILES; }
 
 require_once MADB_DIR . 'includes/seo.php';
+require_once MADB_DIR . 'includes/contact-style.php';
 require_once MADB_DIR . 'includes/fonts.php';
 require_once MADB_DIR . 'includes/schema.php';
 require_once MADB_DIR . 'includes/render.php';
@@ -147,6 +148,7 @@ add_action( 'admin_init', function () {
 				'to'        => sanitize_text_field( $in['to'] ?? '' ),
 				'video_url' => esc_url_raw( madb_unwrap_url( $in['video_url'] ?? '' ) ),
 				'poster_url'=> esc_url_raw( madb_unwrap_url( $in['poster_url'] ?? '' ) ),
+				'style_cf7' => empty( $in['style_cf7'] ) ? '0' : '1',
 			);
 		},
 	) );
@@ -182,6 +184,17 @@ function madb_settings_page() {
 						<input name="madb_settings[poster_url]" id="madb_poster" type="url" class="regular-text"
 						       value="<?php echo esc_attr( madb_opt( 'poster_url' ) ); ?>">
 						<p class="description">Shown while the video loads, and on slow connections. Recommended even if a video is set.</p>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row">Contact form styling</th>
+					<td>
+						<label>
+							<input name="madb_settings[style_cf7]" type="checkbox" value="1"
+							       <?php checked( madb_style_contact_enabled() ); ?>>
+							Style Contact Form 7 forms to match the brief
+						</label>
+						<p class="description">Applies the brief's hairline fields and open circles to any Contact Form 7 form on the site. Only changes how they look &mdash; the fields, the wording and where the form sends are untouched. The brief page is left alone, it already has its own styling.</p>
 					</td>
 				</tr>
 			</table>
